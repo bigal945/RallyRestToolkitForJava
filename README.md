@@ -9,12 +9,14 @@ Original code which was forked and mofidied here carried: Copyright (c) Rally So
 ## Support
 
 As-is.  I modified the original due to class conflicts with Apache HTTP.
-No continual work is planned.  Using different HTTP Library allows me to focus on my original project.
+No continual work is planned.  This project as-is allows me to focus on my original project (no more dependency hell, yay)
 
 ## User Guide
 
-My project did not need Proxy support, so that was removed.
-API connectivity requires an API key (user/pass was previously deprecated and I did not port it)
+Notable Changes from the original
+* Proxy support not ported
+* API connectivity requires an API key (user/pass was previously deprecated and I did not port it)
+* Newly added gzip support not currently ported (may change if my project needs it)
 
 Refer to the original project for [documentation](https://github.com/RallyTools/RallyRestToolkitForJava/wiki/User-Guide)
 
