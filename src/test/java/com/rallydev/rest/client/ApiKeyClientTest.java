@@ -1,8 +1,7 @@
 package com.rallydev.rest.client;
 
 import com.rallydev.rest.matchers.HttpRequestHeaderMatcher;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
+import com.squareup.okhttp.Request;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -12,7 +11,9 @@ import java.net.URISyntaxException;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 public class ApiKeyClientTest {
 
@@ -27,14 +28,14 @@ public class ApiKeyClientTest {
     }
 
     @Test
-    public void shouldIntialize() {
+    public void shouldInitialize() {
         Assert.assertEquals(client.getServer(), server);
     }
 
     @Test
     public void shouldIncludeApiKeyOnRequest() throws Exception {
-        doReturn("").when(client).executeRequest(any(HttpRequestBase.class));
-        client.doRequest(new HttpGet());
-        verify(client).doRequest(argThat(new HttpRequestHeaderMatcher("zsessionid", apiKey)));
+        doReturn("").when(client).executeRequest(any(Request.class));
+        client.doRequest(new Request.Builder());
+        verify(client).doRequest(argThat(new HttpRequestHeaderMatcher("zsessionid", apiKey)).newBuilder());
     }
 }

@@ -14,7 +14,7 @@
 
     <description>A java toolkit for interacting with the Rally Rest API</description>
 
-    <url>https://github.com/RallyTools/RallyRestToolkitForJava</url>
+    <url>https://github.com/bigal945/RallyRestToolkitForJava</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
@@ -25,15 +25,15 @@
 
     <developers>
         <developer>
-            <id>krmorse</id>
-            <name>Kyle Morse</name>
+            <id>bigal945</id>
+            <name>Allen Rawls</name>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:RallyTools/RallyRestToolkitForJava.git</connection>
-        <developerConnection>scm:git:git@github.com:RallyTools/RallyRestToolkitForJava.git</developerConnection>
-        <url>git@github.com:RallyTools/RallyRestToolkitForJava.git</url>
+        <connection>scm:git:git@github.com:bigal945/RallyRestToolkitForJava.git</connection>
+        <developerConnection>scm:git:git@github.com:bigal945/RallyRestToolkitForJava.git</developerConnection>
+        <url>git@github.com:bigal945/RallyRestToolkitForJava.git</url>
     </scm>
     <build>
         <plugins>
@@ -90,9 +90,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.2.5</version>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>2.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

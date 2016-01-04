@@ -1,10 +1,9 @@
 package com.rallydev.rest.matchers;
 
-import org.apache.http.Header;
-import org.apache.http.client.methods.HttpRequestBase;
+import com.squareup.okhttp.Request;
 import org.mockito.ArgumentMatcher;
 
-public class HttpRequestUrlMatcher extends ArgumentMatcher<HttpRequestBase> {
+public class HttpRequestUrlMatcher extends ArgumentMatcher<Request> {
     private String url;
     private String value;
 
@@ -13,9 +12,9 @@ public class HttpRequestUrlMatcher extends ArgumentMatcher<HttpRequestBase> {
     }
 
     public boolean matches(Object o) {
-        if (o instanceof HttpRequestBase) {
-            HttpRequestBase h = (HttpRequestBase) o;
-            return h.getURI().toString().equals(url);
+        if (o instanceof Request) {
+            Request h = (Request) o;
+            return h.url().toString().equals(url);
         }
         return false;
     }

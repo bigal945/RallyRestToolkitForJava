@@ -1,7 +1,6 @@
 package com.rallydev.rest.request;
 
 import com.rallydev.rest.util.Ref;
-import org.apache.http.client.utils.URLEncodedUtils;
 
 /**
  * Represents a WSAPI request to delete an object.
@@ -26,7 +25,7 @@ public class DeleteRequest extends Request{
      */
     @Override
     public String toUrl() {
-        return String.format("%s.js%s", Ref.getRelativeRef(ref),
-                getParams().size() > 0 ? ("?" + URLEncodedUtils.format(getParams(), "utf-8")) : "");
+            return String.format("%s.js%s", Ref.getRelativeRef(ref),
+                    get_params().size() > 0 ? ("?" + getParamsAsEncodedString()) : "");
     }
 }

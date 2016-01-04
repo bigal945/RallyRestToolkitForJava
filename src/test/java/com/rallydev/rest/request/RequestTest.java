@@ -1,7 +1,6 @@
 package com.rallydev.rest.request;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import com.rallydev.rest.util.NameValuePair;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -22,27 +21,27 @@ public class RequestTest {
     @Test
     public void shouldBeAbleToAddParams() {
         Request r = createRequest();
-        Assert.assertEquals(r.getParams().size(), 0);
+        Assert.assertEquals(r.get_params().size(), 0);
         
         r.addParam("Name", "Value");
-        Assert.assertEquals(r.getParams().size(), 1);
+        Assert.assertEquals(r.get_params().size(), 1);
         
         r.addParam("Name2", "Value2");
-        Assert.assertEquals(r.getParams().size(), 2);
+        Assert.assertEquals(r.get_params().size(), 2);
         
-        r.getParams().clear();
-        Assert.assertEquals(r.getParams().size(), 0);
+        r.get_params().clear();
+        Assert.assertEquals(r.get_params().size(), 0);
     }
 
     @Test
     public void shouldBeAbleToSetParams() {
         Request r = createRequest();
-        Assert.assertEquals(r.getParams().size(), 0);
+        Assert.assertEquals(r.get_params().size(), 0);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("Name", "Value"));
-        r.setParams(params);
-        Assert.assertSame(params, r.getParams());
-        Assert.assertEquals(r.getParams().size(), 1);
+        params.add(new NameValuePair("Name", "Value"));
+        r.set_params(params);
+        Assert.assertSame(params, r.get_params());
+        Assert.assertEquals(r.get_params().size(), 1);
     }
 }

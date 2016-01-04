@@ -2,7 +2,6 @@ package com.rallydev.rest.request;
 
 import com.google.gson.JsonObject;
 import com.rallydev.rest.util.Fetch;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -45,6 +44,6 @@ public class CreateRequestTest {
         CreateRequest req = new CreateRequest("Defect", body);
         req.addParam("foo", "备");
         Assert.assertEquals(req.toUrl(), "/defect/create.js?" + 
-                URLEncodedUtils.format(req.getParams(), "utf-8") + "&fetch=true");
+                req.getParamsAsEncodedString() + "&fetch=true");
     }
 }

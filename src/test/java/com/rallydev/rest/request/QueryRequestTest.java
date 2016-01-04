@@ -3,7 +3,6 @@ package com.rallydev.rest.request;
 import com.google.gson.JsonObject;
 import com.rallydev.rest.util.Fetch;
 import com.rallydev.rest.util.QueryFilter;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -33,7 +32,7 @@ public class QueryRequestTest {
 
         QueryRequest q = new QueryRequest("Defect");
         q.addParam("foo", "备");
-        Assert.assertTrue(q.toUrl().contains(URLEncodedUtils.format(q.getParams(), "utf-8")));
+        Assert.assertTrue(q.toUrl().contains(q.getParamsAsEncodedString()));
     }
 
     @Test

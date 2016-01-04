@@ -1,34 +1,29 @@
 package com.rallydev.rest.client;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.methods.*;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DecompressingHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+import com.squareup.okhttp.Credentials;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
-import java.io.Closeable;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A HttpClient implementation providing connectivity to Rally.  This class does not
+ * A OkHttp implementation providing connectivity to Rally.  This class does not
  * provide any authentication on its own but instead relies on a concrete subclass to do so.
  */
-public class HttpClient extends DefaultHttpClient
-    implements Closeable {
+public class RallyHttpClient {
 
+    protected final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     protected URI server;
     protected String wsapiVersion = "v2.0";
-    protected DecompressingHttpClient client;
+    protected OkHttpClient client;
 
     private enum Header {
         Library,
@@ -46,9 +41,9 @@ public class HttpClient extends DefaultHttpClient
         }
     };
 
-    protected HttpClient(URI server) {
+    protected RallyHttpClient(URI server) {
         this.server = server;
-        client = new DecompressingHttpClient(this);
+        client = new OkHttpClient();
     }
 
     /**
@@ -57,7 +52,7 @@ public class HttpClient extends DefaultHttpClient
      * @param proxy The proxy server, e.g. {@code new URI("http://my.proxy.com:8000")}
      */
     public void setProxy(URI proxy) {
-        this.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, new HttpHost(proxy.getHost(), proxy.getPort(), proxy.getScheme()));
+        client.setProxy(new Proxy(Proxy.Type.DIRECT, new InetSocketAddress(proxy.getHost(), proxy.getPort())));
     }
 
     /**
@@ -132,17 +127,17 @@ public class HttpClient extends DefaultHttpClient
     /**
      * Execute a request against the WSAPI
      *
-     * @param request the request to be executed
+     * @param requestBuilder the requestBuilder to be executed
      * @return the JSON encoded string response
      * @throws IOException if a non-200 response code is returned or if some other
      *                     problem occurs while executing the request
      */
-    protected String doRequest(HttpRequestBase request) throws IOException {
+    protected String doRequest(Request.Builder requestBuilder) throws IOException {
         for (Map.Entry<Header, String> header : headers.entrySet()) {
-            request.setHeader("X-RallyIntegration" + header.getKey().name(), header.getValue());
+            requestBuilder.addHeader("X-RallyIntegration" + header.getKey().name(), header.getValue());
         }
 
-        return this.executeRequest(request);
+        return this.executeRequest(requestBuilder.build());
     }
 
     /**
@@ -153,14 +148,12 @@ public class HttpClient extends DefaultHttpClient
      * @throws IOException if a non-200 response code is returned or if some other
      *                     problem occurs while executing the request
      */
-    protected String executeRequest(HttpRequestBase request) throws IOException {
-        HttpResponse response = client.execute(request);
-        HttpEntity entity = response.getEntity();
-        if (response.getStatusLine().getStatusCode() == 200) {
-            return EntityUtils.toString(entity, "utf-8");
+    protected String executeRequest(Request request) throws IOException {
+        Response response = client.newCall(request).execute();
+        if (response.isSuccessful()) {
+            return response.body().string();
         } else {
-            EntityUtils.consumeQuietly(entity);
-            throw new IOException(response.getStatusLine().toString());
+            throw new IOException(response.networkResponse().toString());
         }
     }
 
@@ -174,9 +167,10 @@ public class HttpClient extends DefaultHttpClient
      *                     problem occurs while executing the request
      */
     public String doPost(String url, String body) throws IOException {
-        HttpPost httpPost = new HttpPost(getWsapiUrl() + url);
-        httpPost.setEntity(new StringEntity(body, "utf-8"));
-        return doRequest(httpPost);
+        Request.Builder builder = new Request.Builder()
+            .url(getWsapiUrl() + url)
+            .post(RequestBody.create(JSON, body));
+        return doRequest(builder);
     }
 
 
@@ -190,9 +184,10 @@ public class HttpClient extends DefaultHttpClient
      *                     problem occurs while executing the request
      */
     public String doPut(String url, String body) throws IOException {
-        HttpPut httpPut = new HttpPut(getWsapiUrl() + url);
-        httpPut.setEntity(new StringEntity(body, "utf-8"));
-        return doRequest(httpPut);
+        Request.Builder builder = new Request.Builder()
+            .url(getWsapiUrl() + url)
+            .put(RequestBody.create(JSON, body));
+        return doRequest(builder);
     }
 
     /**
@@ -204,8 +199,9 @@ public class HttpClient extends DefaultHttpClient
      *                     problem occurs while executing the request
      */
     public String doDelete(String url) throws IOException {
-        HttpDelete httpDelete = new HttpDelete(getWsapiUrl() + url);
-        return doRequest(httpDelete);
+        Request.Builder builder = new Request.Builder()
+            .url(getWsapiUrl() + url).delete();
+        return doRequest(builder);
     }
 
     /**
@@ -217,8 +213,10 @@ public class HttpClient extends DefaultHttpClient
      *                     problem occurs while executing the request
      */
     public String doGet(String url) throws IOException {
-        HttpGet httpGet = new HttpGet(getWsapiUrl() + url);
-        return doRequest(httpGet);
+        Request.Builder builder = new Request.Builder()
+            .url(getWsapiUrl() + url)
+            .get();
+        return doRequest(builder);
     }
 
     /**
@@ -227,13 +225,12 @@ public class HttpClient extends DefaultHttpClient
      * @throws IOException if an error occurs releasing resources
      */
     public void close() throws IOException {
-        client.getConnectionManager().shutdown();
+        //client.getConnectionManager().shutdown();
+
     }
 
-    protected Credentials setClientCredentials(URI server, String userName, String password) {
-        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(userName, password);
-        this.getCredentialsProvider().setCredentials(new AuthScope(server.getHost(), server.getPort()), credentials);
-        return credentials;
+    protected String setClientCredentials(URI server, String userName, String password) {
+        return Credentials.basic(userName, password);
     }
 
     /**

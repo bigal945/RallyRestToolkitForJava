@@ -1,10 +1,8 @@
 package com.rallydev.rest.request;
 
 import com.rallydev.rest.util.Fetch;
+import com.rallydev.rest.util.NameValuePair;
 import com.rallydev.rest.util.Ref;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +52,10 @@ public class GetRequest extends Request {
      */
     @Override
     public String toUrl() {
-        List<NameValuePair> params = new ArrayList<NameValuePair>(getParams());
-        params.add(new BasicNameValuePair("fetch", fetch.toString()));
+        List<NameValuePair> params = new ArrayList<NameValuePair>(get_params());
+        params.add(new NameValuePair("fetch", fetch.toString()));
         return String.format("%s.js?%s", getEndpoint(),
-                URLEncodedUtils.format(params, "utf-8"));
+                getParamsAsEncodedString(params));
     }
 
     protected String getEndpoint() {

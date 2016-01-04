@@ -1,10 +1,9 @@
 package com.rallydev.rest.matchers;
 
-import org.apache.http.Header;
-import org.apache.http.client.methods.HttpRequestBase;
+import com.squareup.okhttp.Request;
 import org.mockito.ArgumentMatcher;
 
-public class HttpRequestHeaderMatcher extends ArgumentMatcher<HttpRequestBase> {
+public class HttpRequestHeaderMatcher extends ArgumentMatcher<Request> {
     private String name;
     private String value;
 
@@ -14,10 +13,10 @@ public class HttpRequestHeaderMatcher extends ArgumentMatcher<HttpRequestBase> {
     }
 
     public boolean matches(Object o) {
-        if (o instanceof HttpRequestBase) {
-            HttpRequestBase h = (HttpRequestBase) o;
-            Header header = h.getFirstHeader(name);
-            return header != null && header.getValue().equals(value);
+        if (o instanceof Request) {
+            Request h = (Request) o;
+            String header = h.header(name);
+            return header != null && header.equals(value);
         }
         return false;
     }

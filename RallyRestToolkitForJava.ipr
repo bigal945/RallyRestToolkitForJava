@@ -36,6 +36,9 @@
         <module name="RallyRestToolkitForJava" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="RallyRestToolkitForJava" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="" />
   <component name="DependencyValidationManager">
@@ -194,6 +197,16 @@
       </item>
     </group>
   </component>
+  <component name="ProjectCodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <XML>
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+        </XML>
+      </value>
+    </option>
+    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default (1)" />
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RallyRestToolkitForJava.iml" filepath="$PROJECT_DIR$/RallyRestToolkitForJava.iml" />
@@ -228,26 +241,26 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.2.4/gson-2.2.4-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: commons-codec:commons-codec:1.6">
+    <library name="Maven: com.squareup.okhttp:okhttp:2.7.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.6/commons-codec-1.6.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okhttp/okhttp/2.7.0/okhttp-2.7.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.6/commons-codec-1.6-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okhttp/okhttp/2.7.0/okhttp-2.7.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-codec/commons-codec/1.6/commons-codec-1.6-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okhttp/okhttp/2.7.0/okhttp-2.7.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: commons-logging:commons-logging:1.1.1">
+    <library name="Maven: com.squareup.okio:okio:1.6.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okio/okio/1.6.0/okio-1.6.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okio/okio/1.6.0/okio-1.6.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/squareup/okio/okio/1.6.0/okio-1.6.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: junit:junit:3.8.1">
@@ -259,28 +272,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.apache.httpcomponents:httpclient:4.2.5">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.2.5/httpclient-4.2.5.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.2.5/httpclient-4.2.5-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.2.5/httpclient-4.2.5-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.apache.httpcomponents:httpcore:4.2.4">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.2.4/httpcore-4.2.4.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.2.4/httpcore-4.2.4-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.2.4/httpcore-4.2.4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.beanshell:bsh:2.0b4">
@@ -351,4 +342,3 @@
     </library>
   </component>
 </project>
-

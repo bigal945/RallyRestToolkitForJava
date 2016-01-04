@@ -1,7 +1,10 @@
 package com.rallydev.rest;
 
 import com.google.gson.JsonObject;
-import com.rallydev.rest.request.*;
+import com.rallydev.rest.request.CreateRequest;
+import com.rallydev.rest.request.DeleteRequest;
+import com.rallydev.rest.request.GetRequest;
+import com.rallydev.rest.request.UpdateRequest;
 import com.rallydev.rest.response.CreateResponse;
 import com.rallydev.rest.response.DeleteResponse;
 import com.rallydev.rest.response.GetResponse;

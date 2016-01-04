@@ -3,10 +3,8 @@ package com.rallydev.rest.request;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.rallydev.rest.util.Fetch;
+import com.rallydev.rest.util.NameValuePair;
 import com.rallydev.rest.util.Ref;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +68,11 @@ public class UpdateRequest extends Request {
     @Override
     public String toUrl() {
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>(getParams());
+        List<NameValuePair> params = new ArrayList<NameValuePair>(get_params());
 
-        params.add(new BasicNameValuePair("fetch", getFetch().toString()));
+        params.add(new NameValuePair("fetch", getFetch().toString()));
 
         return String.format("%s.js?%s", Ref.getRelativeRef(ref),
-                URLEncodedUtils.format(params, "utf-8"));
+                getParamsAsEncodedString(params));
     }
 }

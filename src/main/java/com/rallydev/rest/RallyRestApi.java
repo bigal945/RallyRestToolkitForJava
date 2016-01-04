@@ -2,8 +2,7 @@ package com.rallydev.rest;
 
 import com.google.gson.JsonArray;
 import com.rallydev.rest.client.ApiKeyClient;
-import com.rallydev.rest.client.BasicAuthClient;
-import com.rallydev.rest.client.HttpClient;
+import com.rallydev.rest.client.RallyHttpClient;
 import com.rallydev.rest.request.CreateRequest;
 import com.rallydev.rest.request.DeleteRequest;
 import com.rallydev.rest.request.GetRequest;
@@ -25,19 +24,7 @@ import java.net.URI;
  */
 public class RallyRestApi implements Closeable {
 
-    protected HttpClient client;
-
-    /**
-     * Creates a new instance for the specified server using the specified credentials.
-     *
-     * @param server   The server to connect to, e.g. {@code new URI("https://rally1.rallydev.com")}
-     * @param userName The username to be used for authentication.
-     * @param password The password to be used for authentication.
-     * @deprecated Use the api key constructor instead.
-     */
-    public RallyRestApi(URI server, String userName, String password) {
-        this(new BasicAuthClient(server, userName, password));
-    }
+    protected RallyHttpClient client;
 
     /**
      * Creates a new instance for the specified server using the specified API Key.
@@ -49,7 +36,7 @@ public class RallyRestApi implements Closeable {
         this(new ApiKeyClient(server, apiKey));
     }
 
-    protected RallyRestApi(HttpClient httpClient) {
+    protected RallyRestApi(RallyHttpClient httpClient) {
         this.client = httpClient;
     }
 
@@ -211,7 +198,7 @@ public class RallyRestApi implements Closeable {
      *
      * @return the raw http client
      */
-    public HttpClient getClient() {
+    public RallyHttpClient getClient() {
         return client;
     }
 }

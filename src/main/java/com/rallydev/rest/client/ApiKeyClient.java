@@ -1,6 +1,6 @@
 package com.rallydev.rest.client;
 
-import org.apache.http.client.methods.HttpRequestBase;
+import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,7 +8,7 @@ import java.net.URI;
 /**
  * A HttpClient which authenticates using an API Key.
  */
-public class ApiKeyClient extends HttpClient {
+public class ApiKeyClient extends RallyHttpClient {
 
     protected String apiKey;
     protected static final String API_KEY_HEADER = "zsessionid";
@@ -32,8 +32,8 @@ public class ApiKeyClient extends HttpClient {
      *                     problem occurs while executing the request
      */
     @Override
-    protected String doRequest(HttpRequestBase request) throws IOException {
-        request.setHeader(API_KEY_HEADER, this.apiKey);
+    protected String doRequest(Request.Builder request) throws IOException {
+        request.addHeader(API_KEY_HEADER, this.apiKey);
         return super.doRequest(request);
     }
 }

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.rallydev.rest.client.ApiKeyClient;
-import com.rallydev.rest.client.BasicAuthClient;
 import com.rallydev.rest.request.CreateRequest;
 import com.rallydev.rest.request.DeleteRequest;
 import com.rallydev.rest.request.GetRequest;
@@ -41,16 +40,11 @@ public class RallyRestApiTest {
 
     }
 
-    public void shouldInitializeBasicAuthClient() {
-        RallyRestApi basicAuthApi = new RallyRestApi(server, "username", "password");
-        Assert.assertTrue(basicAuthApi.getClient() instanceof BasicAuthClient);
-    }
-
     public void shouldInitializeApiKeyClient() {
         RallyRestApi apiKeyApi = new RallyRestApi(server, "apiKey");
         Assert.assertTrue(apiKeyApi.getClient() instanceof ApiKeyClient);
     }
-
+    /*
     public void shouldSetProxy() throws Exception {
         URI proxy = new URI("http://my.proxy.com:8000");
         api.setProxy(proxy);
@@ -62,7 +56,7 @@ public class RallyRestApiTest {
         api.setProxy(proxy, "username", "password");
         verify(api.client).setProxy(proxy, "username", "password");
     }
-
+    */
     public void shouldSetVendor() throws Exception {
         api.setApplicationVendor("fooVendor");
         verify(api.client).setApplicationVendor("fooVendor");

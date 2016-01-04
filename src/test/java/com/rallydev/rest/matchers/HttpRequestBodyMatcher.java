@@ -1,11 +1,11 @@
 package com.rallydev.rest.matchers;
 
-import org.apache.http.Header;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpRequestBase;
+import com.squareup.okhttp.Request;
 import org.mockito.ArgumentMatcher;
 
-public class HttpRequestBodyMatcher extends ArgumentMatcher<HttpEntityEnclosingRequestBase> {
+import java.nio.charset.StandardCharsets;
+
+public class HttpRequestBodyMatcher extends ArgumentMatcher<Request> {
     private String url;
     private String body;
 
@@ -15,12 +15,11 @@ public class HttpRequestBodyMatcher extends ArgumentMatcher<HttpEntityEnclosingR
     }
 
     public boolean matches(Object o) {
-        if (o instanceof HttpEntityEnclosingRequestBase) {
-            HttpEntityEnclosingRequestBase h = (HttpEntityEnclosingRequestBase) o;
-            Header contentType = h.getEntity().getContentType();
-            return contentType.getValue().toLowerCase().contains("utf-8") &&
-                    h.getURI().toString().equals(url) &&
-                    h.getEntity().toString().equals(body);
+        if (o instanceof Request) {
+            Request h = (Request) o;
+            return h.body().contentType().charset().equals(StandardCharsets.UTF_8) &&
+                    h.url().toString().equals(url) &&
+                    h.body().toString().equals(body);
         }
         return false;
     }

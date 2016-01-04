@@ -1,7 +1,6 @@
 package com.rallydev.rest.response;
 
 import com.google.gson.JsonObject;
-import com.rallydev.rest.RallyRestApi;
 
 /**
  * Represents a WSAPI response from creating an object

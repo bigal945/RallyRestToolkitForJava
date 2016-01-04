@@ -1,8 +1,9 @@
 package com.rallydev.rest.request;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import com.rallydev.rest.util.NameValuePair;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public abstract class Request {
     
-    private List<NameValuePair> params = new ArrayList<NameValuePair>();
+    private List<NameValuePair> _params = new ArrayList<NameValuePair>();
 
     /**
      * Create a new request.
@@ -25,17 +26,50 @@ public abstract class Request {
      * 
      * @return The list of additional parameters
      */
-    public List<NameValuePair> getParams() {
-        return params;
+    public List<NameValuePair> get_params() {
+        return _params;
+    }
+
+    /**
+     * Gets an encoded string of parameters.
+     *
+     * @param params local modified params if different
+     * @return string of encoded parameters
+     */
+    public String getParamsAsEncodedString(List<NameValuePair> params) {
+        QueryString str = new QueryString();
+        for (int i = 0; i < params.size(); i++) {
+            str.add(params.get(i).getName(), params.get(i).getValue());
+        }
+        return str.getQuery();
+
+        /*
+        If abandon NameValuePair and use a map instead
+        Iterator it = mp.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+        */
+    }
+
+    /**
+     * Gets a string of parameters with specified encoding.
+     *
+     * @return string of encoded parameters
+     */
+    public String getParamsAsEncodedString() {
+        return getParamsAsEncodedString(_params);
     }
 
     /**
      * Set the list of additional parameters included in this request.
      * 
-     * @param params The list of additional parameters
+     * @param _params The list of additional parameters
      */
-    public void setParams(List<NameValuePair> params) {
-        this.params = params;
+    public void set_params(List<NameValuePair> _params) {
+        this._params = _params;
     }
 
     /**
@@ -45,7 +79,7 @@ public abstract class Request {
      * @param value the parameter value
      */
     public void addParam(String name, String value) {
-        getParams().add(new BasicNameValuePair(name, value));
+        get_params().add(new NameValuePair(name, value));
     }
 
     /**
@@ -55,4 +89,37 @@ public abstract class Request {
      * @return the url representing this request.
      */
     public abstract String toUrl();
+}
+
+class QueryString {
+
+    private StringBuffer query = new StringBuffer( );
+
+    public QueryString() {  }
+
+    public QueryString(String name, String value) {
+        encode(name, value);
+    }
+
+    public synchronized void add(String name, String value) {
+        if (query.length() != 0)
+            query.append('&');
+        encode(name, value);
+    }
+
+    private synchronized void encode(String name, String value) {
+        try {
+            query.append(URLEncoder.encode(name, "UTF-8"));
+            query.append('=');
+            query.append(URLEncoder.encode(value, "UTF-8"));
+        }
+        catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException("Broken VM does not support UTF-8");
+        }
+    }
+
+    public String getQuery( ) {
+        return query.toString( );
+    }
+
 }

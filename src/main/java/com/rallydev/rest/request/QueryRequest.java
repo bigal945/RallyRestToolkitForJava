@@ -2,11 +2,9 @@ package com.rallydev.rest.request;
 
 import com.google.gson.JsonObject;
 import com.rallydev.rest.util.Fetch;
+import com.rallydev.rest.util.NameValuePair;
 import com.rallydev.rest.util.QueryFilter;
 import com.rallydev.rest.util.Ref;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -269,36 +267,36 @@ public class QueryRequest extends Request implements Cloneable {
      */
     @Override
     public String toUrl() {
-        List<NameValuePair> params = new ArrayList<NameValuePair>(getParams());
+        List<NameValuePair> params = new ArrayList<NameValuePair>(get_params());
 
-        params.add(new BasicNameValuePair("start", Integer.toString(getStart())));
-        params.add(new BasicNameValuePair("pagesize", Integer.toString(getPageSize())));
-        params.add(new BasicNameValuePair("fetch", fetch.toString()));
+        params.add(new NameValuePair("start", Integer.toString(getStart())));
+        params.add(new NameValuePair("pagesize", Integer.toString(getPageSize())));
+        params.add(new NameValuePair("fetch", fetch.toString()));
 
         String order = getOrder();
         if (!order.contains("ObjectID")) {
             order += ",ObjectID";
         }
-        params.add(new BasicNameValuePair("order", order));
+        params.add(new NameValuePair("order", order));
         if (getQueryFilter() != null) {
-            params.add(new BasicNameValuePair("query", getQueryFilter().toString()));
+            params.add(new NameValuePair("query", getQueryFilter().toString()));
         }
 
         if (getWorkspace() != null && getWorkspace().length() > 0) {
-            params.add(new BasicNameValuePair("workspace", Ref.getRelativeRef(getWorkspace())));
+            params.add(new NameValuePair("workspace", Ref.getRelativeRef(getWorkspace())));
         }
 
         if (getProject() == null) {
-            params.add(new BasicNameValuePair("project", "null"));
+            params.add(new NameValuePair("project", "null"));
         } else if (getProject().length() > 0) {
-            params.add(new BasicNameValuePair("project", getProject()));
-            params.add(new BasicNameValuePair("projectScopeUp", Boolean.toString(isScopedUp())));
-            params.add(new BasicNameValuePair("projectScopeDown", Boolean.toString(isScopedDown())));
+            params.add(new NameValuePair("project", getProject()));
+            params.add(new NameValuePair("projectScopeUp", Boolean.toString(isScopedUp())));
+            params.add(new NameValuePair("projectScopeDown", Boolean.toString(isScopedDown())));
         }
 
         return (this.type != null ? getTypeEndpoint() :
                 Ref.getRelativeRef(collection.get("_ref").getAsString())) +
-                "?" + URLEncodedUtils.format(params, "utf-8");
+                "?" + getParamsAsEncodedString(params);
     }
 
     protected String getTypeEndpoint() {
